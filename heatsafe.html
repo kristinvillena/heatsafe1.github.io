@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Temperature Checker</title>
+  <style>
+    body {
+      font-family: 'Helvetica', sans-serif;
+      background-color: #f0f0f0;
+      display: flex;
+      flex-direction: column; /* Display content in a column */
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    #watch {
+      width: 324px;
+      height: 394px;
+      background-color: #fff;
+      border: 16px solid #222;
+      border-radius: 36px;
+      margin-top: 40px;
+      position: relative;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+
+    #temperatureInput {
+      width: 20%;
+      padding: 10px;
+      margin: 40px auto 0; /* Adjust margin to position above the watch */
+      display: block;
+      font-size: 16px;
+      text-align: center;
+    }
+
+    #temperatureInput::-webkit-inner-spin-button,
+    #temperatureInput::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+    #checkButton {
+      width: 20%;
+      padding: 10px;
+      margin: 10px auto; /* Adjust margin to position above the watch */
+      display: block;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    #resultMessage {
+      text-align: center;
+      font-size: 24px;
+      margin-top: 20px;
+      display: none;
+      padding: 150px 0;
+    }
+
+    @keyframes flashRed {
+      from {
+        color: red;
+      }
+      to {
+        color: #ffffff;
+      }
+    }
+
+    @keyframes flashLight {
+      0% {
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #fff, 0 0 50px #fff;
+      }
+      100% {
+        text-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  
+
+
+  <!-- Temperature input and Check button outside the watch container, positioned above -->
+  <input type="number" id="temperatureInput" placeholder="Enter Temperature">
+
+  <button id="checkButton" onclick="checkTemperature()">Check Temperature</button>
+
+  <div id="watch">
+    <!-- Content of the watch goes here -->
+    <img src="logo.PNG" alt="Temperature Image" style="width: 30%; height: 30%; object-fit: cover; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);">
+    <div id="resultMessage"></div>
+  </div>
+
+  <script>
+
+    function checkTemperature() {
+      var temperature = parseFloat(document.getElementById('temperatureInput').value);
+      var watch = document.getElementById('watch'); 
+
+      if (isNaN(temperature)) {
+        alert('Please enter a valid temperature.');
+        return;
+      }
+
+      var resultMessage = document.getElementById('resultMessage');
+
+      if (temperature <= 35) {
+        resultMessage.style.color = 'black';
+        watch.style.backgroundColor =  '#99cfe0';
+        resultMessage.innerText = 'Temperature is low.';
+      } else if (temperature >= 36 && temperature <= 37.5) {
+        resultMessage.style.color = 'black';
+        watch.style.backgroundColor =  'white';
+        resultMessage.innerText = 'Temperature is normal.';
+      } else if (temperature >= 37.5 && temperature <= 38.9) {
+        resultMessage.style.color = 'black';
+        watch.style.backgroundColor = '#FFD580';
+        resultMessage.innerText = 'Temperature is high.';
+      } else if (temperature > 38.9 && temperature < 39.8) {
+        resultMessage.style.color = 'white';
+        watch.style.backgroundColor = '#FF7F7F';
+        resultMessage.innerText = 'Temperature is dangerously high.';
+      } else if (temperature >= 39.8) {
+        resultMessage.style.color = 'red';
+        watch.style.backgroundColor = '#990000';
+        resultMessage.innerText = 'ALERT! \n POSSIBLE HEAT STROKE';
+        resultMessage.style.animation = 'flashRed 0.3s infinite alternate, flashLight 0.5s';
+      }
+
+      resultMessage.style.display = 'block';
+
+    }
+    
+  </script>
+</body>
+</html>
